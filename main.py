@@ -20,7 +20,7 @@ dp = Dispatcher(bot, storage=storage)
 @dp.message_handler(commands=["start"])
 async def process_start_command(msg):
     try:
-        await dp.throttle('start', rate=2)
+        await dp.throttle('start', rate=1)
     except Throttled:
         pass
     else:
@@ -31,17 +31,17 @@ async def process_start_command(msg):
         await bot.send_message(msg.from_user.id, message, disable_notification=True, parse_mode="Markdown")
 
 @dp.message_handler(lambda msg: msg.reply_to_message and msg.from_user.id in config.admins_id)
-async def process_reply(msg):
+async def process_reply_admin(msg):
     try:
         await bot.send_message(msg.reply_to_message.forward_from.id, msg.text)
     except:
         await bot.send_message(msg.from_user.id, config.error_id)
 
 
-@dp.message_handler(lambda msg: msg.from_user.id not in config.admins_id)
+@dp.message_handler()
 async def process_send(msg):
     try:
-        await dp.throttle("start", rate=2)
+        await dp.throttle("start", rate=1)
     except Throttled:
         pass
     else:
