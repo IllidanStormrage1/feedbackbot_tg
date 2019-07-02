@@ -35,7 +35,7 @@ async def process_send(msg):
     try:
         await dp.throttle('start', rate=1)
     except Throttled:
-        pass1
+        pass
     else:
         for id in config.admins_id:
             await bot.forward_message(id, msg.from_user.id, msg.message_id)
